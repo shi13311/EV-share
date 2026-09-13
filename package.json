@@ -1,0 +1,18 @@
+{
+  "name": "ev-share-platform",
+  "version": "1.0.0",
+  "description": "Peer-to-Peer Home EV Charger Rental Network (MERN Stack Final Year Project)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "open": "start index.html"
+  },
+  "keywords": ["ev-charging", "p2p", "mern", "react", "mongodb", "green-tech"],
+  "author": "Ayush Chauhan",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.3.1"
+  }
+}
