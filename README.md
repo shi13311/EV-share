@@ -1,13 +1,13 @@
 ﻿# ⚡ EV Share – Pan-India Peer-to-Peer EV Charging Network
 
-[![Live Demo](https://img.shields.io/badge/Live_Website-Online-00C853?style=for-the-badge&logo=cloudflare)](https://receives-idaho-think-second.trycloudflare.com)
-[![Status](https://img.shields.io/badge/Status-100%25_Responsive-blue?style=for-the-badge)](https://receives-idaho-think-second.trycloudflare.com)
-[![Pan India](https://img.shields.io/badge/Coverage-75%2B_Indian_Cities-orange?style=for-the-badge)](https://receives-idaho-think-second.trycloudflare.com)
+[![Live Demo](https://img.shields.io/badge/Live_Website-Online-00C853?style=for-the-badge&logo=cloudflare)](https://experimental-optional-winners-belong.trycloudflare.com)
+[![Status](https://img.shields.io/badge/Status-100%25_Responsive-blue?style=for-the-badge)](https://experimental-optional-winners-belong.trycloudflare.com)
+[![Pan India](https://img.shields.io/badge/Coverage-75%2B_Indian_Cities-orange?style=for-the-badge)](https://experimental-optional-winners-belong.trycloudflare.com)
 
 ---
 
 ## 🌐 DIRECT LIVE WEBSITE LINK
-### 👉 **[https://receives-idaho-think-second.trycloudflare.com](https://receives-idaho-think-second.trycloudflare.com)**
+### 👉 **[https://experimental-optional-winners-belong.trycloudflare.com](https://experimental-optional-winners-belong.trycloudflare.com)**
 
 *(Open on any Phone, Android, iPhone, Laptop, or Mac — No install needed!)*
 
