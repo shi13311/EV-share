@@ -1391,7 +1391,7 @@ function sendJson(res, statusCode, data) {
   res.end(JSON.stringify(data));
 }
 
-const server = http.createServer((req, res) => {
+function requestHandler(req, res) {
   const parsedUrl = url.parse(req.url, true);
   const pathname = parsedUrl.pathname;
   const method = req.method;
@@ -2226,22 +2226,26 @@ const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': contentType });
     res.end(data);
   });
-});
+}
 
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Pan-India EV-Share server running at http://0.0.0.0:${PORT} (Local: http://localhost:${PORT})`);
-  console.log(`[AUTH CONFIG] Platform Owner Admin configured: ${ADMIN_EMAIL}`);
-});
+const server = http.createServer(requestHandler);
 
-// Secondary port 3000 listener for convenience
-try {
-  const server3000 = http.createServer((req, res) => server.emit('request', req, res));
-  server3000.listen(3000, '0.0.0.0', () => {
-    console.log(`Pan-India EV-Share server also running on http://localhost:3000`);
-  }).on('error', (e) => {
-    console.log('Port 3000 fallback not needed:', e.message);
+if (require.main === module) {
+  server.listen(PORT, '0.0.0.0', () => {
+    console.log(`Pan-India EV-Share server running at http://0.0.0.0:${PORT} (Local: http://localhost:${PORT})`);
+    console.log(`[AUTH CONFIG] Platform Owner Admin configured: ${ADMIN_EMAIL}`);
   });
-} catch (e) {}
 
-module.exports = server;
+  // Secondary port 3000 listener for convenience
+  try {
+    const server3000 = http.createServer(requestHandler);
+    server3000.listen(3000, '0.0.0.0', () => {
+      console.log(`Pan-India EV-Share server also running on http://localhost:3000`);
+    }).on('error', (e) => {
+      console.log('Port 3000 fallback not needed:', e.message);
+    });
+  } catch (e) {}
+}
+
+module.exports = requestHandler;
 
