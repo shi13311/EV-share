@@ -2193,9 +2193,21 @@ function requestHandler(req, res) {
     });
   }
 
-  // Serve static files
-  let safePath = pathname === '/' ? '/index.html' : pathname;
-  const filePath = path.join(__dirname, safePath);
+  // Serve static files with multi-directory fallback for Vercel & Local
+  let safePath = (pathname === '/' || !pathname) ? 'index.html' : pathname.replace(/^\//, '');
+  let filePath = path.join(__dirname, safePath);
+  if (!fs.existsSync(filePath)) {
+    filePath = path.join(process.cwd(), safePath);
+  }
+  if (!fs.existsSync(filePath)) {
+    filePath = path.join(process.cwd(), 'public', safePath);
+  }
+  if (!fs.existsSync(filePath)) {
+    filePath = path.join(__dirname, 'index.html');
+  }
+  if (!fs.existsSync(filePath)) {
+    filePath = path.join(process.cwd(), 'index.html');
+  }
   
   const ext = path.extname(filePath).toLowerCase();
   const mimeTypes = {
