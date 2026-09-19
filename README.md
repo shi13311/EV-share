@@ -1,4 +1,4 @@
-﻿# ⚡ EV Share – Pan-India Peer-to-Peer EV Charging Network
+# ⚡ EV Share – Pan-India Peer-to-Peer EV Charging Network
 
 [![Live Demo](https://img.shields.io/badge/Live_Website-Online-00C853?style=for-the-badge&logo=cloudflare)](https://experimental-optional-winners-belong.trycloudflare.com)
 [![Status](https://img.shields.io/badge/Status-100%25_Responsive-blue?style=for-the-badge)](https://experimental-optional-winners-belong.trycloudflare.com)
@@ -25,18 +25,15 @@
 
 ---
 
-## 🧪 Demo Login Credentials
+## 🔐 Authentication & Roles
 
-| Role | Email / Mobile | Password |
-| :--- | :--- | :--- |
-| **EV Customer / Driver** | yush@evshare.in (or 6306710214) | 123456 |
-| **Residential Host** | ajesh.sharma@gmail.com | 123456 |
-
----
+- 🚗 **EV Driver Registration:** Drivers create their account with name, email, mobile, and secure password to discover and book private charging stations.
+- 🔌 **Charger Host Registration:** Residential hosts register their properties, list charging sockets, and manage driver bookings.
+- 👑 **Platform Owner Administration:** Single pre-configured administrator role authenticated securely via `ADMIN_EMAIL` / `ADMIN_PASSWORD` environment variables.
 
 ## 🛠️ Local Development Setup
 
-`ash
+` ash
 # 1. Clone repository
 git clone https://github.com/shi13311/EV-share.git
 
