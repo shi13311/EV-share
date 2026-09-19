@@ -2243,3 +2243,5 @@ try {
   });
 } catch (e) {}
 
+module.exports = server;
+
