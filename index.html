@@ -1249,6 +1249,36 @@ const MASTER_ADMIN_USER = {
         pincode: '201301',
         isBanned: false,
         createdAt: '2026-01-01T00:00:00.000Z'
+      },
+      {
+        id: 'usr-ayush-driver-01',
+        name: 'Ayush Chauhan (EV Driver)',
+        firstName: 'Ayush',
+        lastName: 'Chauhan',
+        email: 'ayushchauhan411@gmail.com',
+        phone: '9876543210',
+        city: 'Delhi-NCR',
+        role: 'driver',
+        salt: 'salt_ayush_evshare_2026',
+        password: 'Ayush@123',
+        passwordHash: '9199bb7e4b03051928b805870e50c054bb0d34f824e8dc3e9ced7c4ad8a02291',
+        isBanned: false,
+        createdAt: '2026-01-01T00:00:00.000Z'
+      },
+      {
+        id: 'usr-ayush-driver-02',
+        name: 'Ayush Chauhan (EV Driver)',
+        firstName: 'Ayush',
+        lastName: 'Chauhan',
+        email: 'ayusgchauhan411@gmail.com',
+        phone: '9876543210',
+        city: 'Delhi-NCR',
+        role: 'driver',
+        salt: 'salt_ayush_evshare_2026',
+        password: 'Ayush@123',
+        passwordHash: '9199bb7e4b03051928b805870e50c054bb0d34f824e8dc3e9ced7c4ad8a02291',
+        isBanned: false,
+        createdAt: '2026-01-01T00:00:00.000Z'
       }
     ];
 
@@ -1690,14 +1720,22 @@ function App() {
 
     // Client-Side Cryptographic LocalStorage Auth Engine
     let localUsers = JSON.parse(localStorage.getItem('evs_users_db') || '[]');
-    if (!localUsers.some(u => u.email === MASTER_ADMIN_USER.email)) {
-      localUsers = [MASTER_ADMIN_USER, ...localUsers];
+    INITIAL_USERS.forEach(initU => {
+      if (!localUsers.some(u => u.email === initU.email)) {
+        localUsers.push(initU);
+      }
+    });
+    try {
       localStorage.setItem('evs_users_db', JSON.stringify(localUsers));
-    }
-    const matchedUser = localUsers.find(u => u.email && u.email.toLowerCase() === cleanInput || cleanPhone.length === 10 && u.phone && u.phone.replace(/\D/g, '').slice(-10) === cleanPhone);
+    } catch(err) {}
+
+    const matchedUser = localUsers.find(u => 
+      (u.email && u.email.toLowerCase() === cleanInput) || 
+      (cleanPhone.length === 10 && u.phone && u.phone.replace(/\D/g, '').slice(-10) === cleanPhone)
+    );
     if (!matchedUser) {
       setIsLoggingIn(false);
-      setLoginError("Invalid email/mobile or password. Please check your credentials or create a new account.");
+      setLoginError("Invalid email/mobile or password. Please check your spelling or click Create Account.");
       return;
     }
     if (matchedUser.isBanned) {
