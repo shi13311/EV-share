@@ -2734,9 +2734,14 @@ function App() {
   };
 
   // Handle Proceeding to Payment
+    // Handle Proceeding to Payment
   const handleProceedToPayment = () => {
-    
+    setIsBookingModalOpen(false);
+    setIsPaymentModalOpen(true);
+  };
+
   // =========================================================================
+  // 4. GATEWAY AUTHENTICATION VIEW (When isLoggedIn === false)
   // 4. GATEWAY AUTHENTICATION VIEW (When isLoggedIn === false)
   // Only Sign In, Register, and Forgot Password are accessible.
   // Private pages (Booking, Payment, Profile, Host, Admin) are strictly locked.
