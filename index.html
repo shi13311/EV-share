@@ -2240,6 +2240,33 @@ function App() {
     paymentMethod: "EV-Share Credits"
   }]);
 
+  const upcomingBookingsList = React.useMemo(() => {
+    return myBookings.filter(b => b.status === "Confirmed" || b.status === "Active" || b.status === "In Progress");
+  }, [myBookings]);
+
+  const completedBookingsList = React.useMemo(() => {
+    return myBookings.filter(b => b.status === "Completed" || b.status === "Finished");
+  }, [myBookings]);
+
+  const totalSpentAmount = React.useMemo(() => {
+    return myBookings.reduce((sum, b) => sum + (Number(b.amountPaid) || 0), 0);
+  }, [myBookings]);
+
+  const totalEnergyDelivered = React.useMemo(() => {
+    return myBookings.reduce((sum, b) => sum + (Number(b.energyDelivered) || Number(b.powerKw ? b.powerKw * (b.durationHours || 2) * 0.92 : 14.8)), 0);
+  }, [myBookings]);
+
+  const savedChargersList = React.useMemo(() => {
+    return chargers.filter(c => savedChargerIds.includes(c.id));
+  }, [chargers, savedChargerIds]);
+
+  const handleCancelBooking = (bookingId) => {
+    if (confirm("Are you sure you want to cancel this booking? Refund will be initiated to source account.")) {
+      setMyBookings(prev => prev.map(b => b.id === bookingId ? { ...b, status: "Cancelled" } : b));
+      alert("Booking #" + bookingId + " cancelled. ₹153.40 refund initiated.");
+    }
+  };
+
   // Owner's Incoming Bookings
   const [ownerBookings, setOwnerBookings] = React.useState([{
     id: "EVS-2026-10452",
@@ -2481,7 +2508,7 @@ function App() {
         bookedAt: new Date().toISOString()
       };
       
-      setBookings(prev => [newBooking, ...prev]);
+      setMyBookings(prev => [newBooking, ...prev]);
       setLatestBooking(newBooking);
       setIsProcessingPayment(false);
       setIsPaymentModalOpen(false);
