@@ -1216,7 +1216,42 @@ const MASTER_ADMIN_USER = {
 };
 
 // --- REGISTERED USERS DATABASE INITIALIZER ---
-const INITIAL_USERS = [MASTER_ADMIN_USER];
+
+    const INITIAL_USERS = [
+      MASTER_ADMIN_USER,
+      {
+        id: 'usr-driver-demo-01',
+        name: 'Rahul Sharma (EV Driver)',
+        firstName: 'Rahul',
+        lastName: 'Sharma',
+        email: 'driver@evshare.in',
+        phone: '9876543210',
+        city: 'Delhi-NCR',
+        role: 'driver',
+        salt: 'salt_driver_evshare_2026',
+        passwordHash: '708fafb8d11ee315245283c863ff8d5c1eaf6d82701ef0e73ebce0af9e18b9fd',
+        isBanned: false,
+        createdAt: '2026-01-01T00:00:00.000Z'
+      },
+      {
+        id: 'usr-host-demo-01',
+        name: 'Rohit Malhotra (Charger Host)',
+        firstName: 'Rohit',
+        lastName: 'Malhotra',
+        email: 'host@evshare.in',
+        phone: '9818812345',
+        city: 'Delhi-NCR',
+        role: 'host',
+        salt: 'salt_host_evshare_2026',
+        passwordHash: '70ceb7958e825fe5072432e1cae2483e93740f177be0847e1f2c3de3a36402e0',
+        businessName: 'Malhotra Villa Socket',
+        address: 'Tower B-4, Sector 62, Noida, Delhi-NCR',
+        pincode: '201301',
+        isBanned: false,
+        createdAt: '2026-01-01T00:00:00.000Z'
+      }
+    ];
+
 
 // --- CITY COORDINATES FOR LEAFLET MAP ---
 const CITY_COORDINATES = {
