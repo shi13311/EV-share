@@ -1635,6 +1635,13 @@ function App() {
   const [adminForbiddenModal, setAdminForbiddenModal] = React.useState(false);
   const [forbiddenMessage, setForbiddenMessage] = React.useState("");
 
+  // Global Auth Modal States
+  const [isAuthModalOpen, setIsAuthModalOpen] = React.useState(false);
+  const [authModalMessage, setAuthModalMessage] = React.useState("");
+  const [authTab, setAuthTab] = React.useState("login");
+  const [isForgotMode, setIsForgotMode] = React.useState(false);
+  const [forgotMsg, setForgotMsg] = React.useState("");
+
   // Admin Center Live State
   const [adminStats, setAdminStats] = React.useState(null);
   const [adminUsers, setAdminUsers] = React.useState([]);
