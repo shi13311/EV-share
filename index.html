@@ -1198,19 +1198,20 @@ function validatePhone(phone) {
   return /^[6-9]\d{9}$/.test(clean);
 }
 
-// Pre-configured Master Admin Account (Only One System Admin)
-// Email: admin@evshare.in | Password: Admin@EVShare2026! | Role: 'admin'
+// Pre-configured Master Admin Account (Only Ayush Chauhan has System Admin Privileges)
+// Email: ayushchauhan411@gmail.com / admin@evshare.in | Password: Ayush@123 | Role: 'admin'
 const MASTER_ADMIN_USER = {
-  id: 'usr-admin-master-01',
-  name: 'EV-Share System Administrator',
-  firstName: 'System',
-  lastName: 'Administrator',
-  email: 'admin@evshare.in',
-  phone: '9999999999',
+  id: 'usr-admin-ayush-01',
+  name: 'Ayush Chauhan (Platform Administrator)',
+  firstName: 'Ayush',
+  lastName: 'Chauhan',
+  email: 'ayushchauhan411@gmail.com',
+  phone: '9876543210',
   city: 'Delhi-NCR',
   role: 'admin',
-  salt: 'salt_admin_evshare_2026_master',
-  passwordHash: 'eaf26cb58a2d0056c473d90aa1e2e4f6de36528401987d37475923ef1f2497cb',
+  salt: 'salt_ayush_admin_evshare_2026',
+  password: 'Ayush@123',
+  passwordHash: '9199bb7e4b03051928b805870e50c054bb0d34f824e8dc3e9ced7c4ad8a02291',
   isBanned: false,
   createdAt: '2026-01-01T00:00:00.000Z'
 };
@@ -1229,6 +1230,7 @@ const MASTER_ADMIN_USER = {
         city: 'Delhi-NCR',
         role: 'driver',
         salt: 'salt_driver_evshare_2026',
+        password: 'Driver@EV2026!',
         passwordHash: '708fafb8d11ee315245283c863ff8d5c1eaf6d82701ef0e73ebce0af9e18b9fd',
         isBanned: false,
         createdAt: '2026-01-01T00:00:00.000Z'
@@ -1243,6 +1245,7 @@ const MASTER_ADMIN_USER = {
         city: 'Delhi-NCR',
         role: 'host',
         salt: 'salt_host_evshare_2026',
+        password: 'Host@EV2026!',
         passwordHash: '70ceb7958e825fe5072432e1cae2483e93740f177be0847e1f2c3de3a36402e0',
         businessName: 'Malhotra Villa Socket',
         address: 'Tower B-4, Sector 62, Noida, Delhi-NCR',
@@ -1251,30 +1254,30 @@ const MASTER_ADMIN_USER = {
         createdAt: '2026-01-01T00:00:00.000Z'
       },
       {
-        id: 'usr-ayush-driver-01',
-        name: 'Ayush Chauhan (EV Driver)',
+        id: 'usr-admin-alias-01',
+        name: 'Ayush Chauhan (Admin)',
         firstName: 'Ayush',
         lastName: 'Chauhan',
-        email: 'ayushchauhan411@gmail.com',
+        email: 'admin@evshare.in',
         phone: '9876543210',
         city: 'Delhi-NCR',
-        role: 'driver',
-        salt: 'salt_ayush_evshare_2026',
+        role: 'admin',
+        salt: 'salt_ayush_admin_evshare_2026',
         password: 'Ayush@123',
         passwordHash: '9199bb7e4b03051928b805870e50c054bb0d34f824e8dc3e9ced7c4ad8a02291',
         isBanned: false,
         createdAt: '2026-01-01T00:00:00.000Z'
       },
       {
-        id: 'usr-ayush-driver-02',
-        name: 'Ayush Chauhan (EV Driver)',
+        id: 'usr-admin-alias-02',
+        name: 'Ayush Chauhan (Admin)',
         firstName: 'Ayush',
         lastName: 'Chauhan',
         email: 'ayusgchauhan411@gmail.com',
         phone: '9876543210',
         city: 'Delhi-NCR',
-        role: 'driver',
-        salt: 'salt_ayush_evshare_2026',
+        role: 'admin',
+        salt: 'salt_ayush_admin_evshare_2026',
         password: 'Ayush@123',
         passwordHash: '9199bb7e4b03051928b805870e50c054bb0d34f824e8dc3e9ced7c4ad8a02291',
         isBanned: false,
@@ -1566,14 +1569,19 @@ function App() {
   // =========================================================================
   const [authToken, setAuthToken] = React.useState(localStorage.getItem('evs_auth_token') || '');
   const [registeredUsers, setRegisteredUsers] = React.useState(() => {
+    let users = INITIAL_USERS;
     const localDb = localStorage.getItem('evs_users_db');
     if (localDb) {
       try {
-        return JSON.parse(localDb);
+        const parsed = JSON.parse(localDb);
+        if (Array.isArray(parsed)) {
+          const filtered = parsed.filter(u => u.email !== MASTER_ADMIN_USER.email && u.email !== 'admin@evshare.in' && u.email !== 'ayusgchauhan411@gmail.com');
+          users = [MASTER_ADMIN_USER, ...filtered];
+        }
       } catch (e) {}
     }
-    localStorage.setItem('evs_users_db', JSON.stringify(INITIAL_USERS));
-    return INITIAL_USERS;
+    localStorage.setItem('evs_users_db', JSON.stringify(users));
+    return users;
   });
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [userRole, setUserRole] = React.useState("driver"); // 'driver', 'host', 'admin'
@@ -1727,6 +1735,8 @@ function App() {
 
     // Client-Side Cryptographic LocalStorage Auth Engine
     let localUsers = JSON.parse(localStorage.getItem('evs_users_db') || '[]');
+    const otherUsers = localUsers.filter(u => u.email !== MASTER_ADMIN_USER.email && u.email !== 'admin@evshare.in' && u.email !== 'ayusgchauhan411@gmail.com');
+    localUsers = [MASTER_ADMIN_USER, ...otherUsers];
     INITIAL_USERS.forEach(initU => {
       if (!localUsers.some(u => u.email === initU.email)) {
         localUsers.push(initU);
@@ -1789,10 +1799,8 @@ function App() {
   };
 
   const handleQuickLogin = (roleType) => {
-    let targetUser = MASTER_ADMIN_USER;
-    if (roleType === 'driver') {
-      targetUser = INITIAL_USERS.find(u => u.role === 'driver') || INITIAL_USERS[1];
-    } else if (roleType === 'host') {
+    let targetUser = INITIAL_USERS.find(u => u.role === 'driver') || INITIAL_USERS[1];
+    if (roleType === 'host') {
       targetUser = INITIAL_USERS.find(u => u.role === 'host') || INITIAL_USERS[2];
     }
     const token = 'evs_tok_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
@@ -1802,7 +1810,7 @@ function App() {
     } catch (e) {}
     setAuthToken(token);
     setIsLoggedIn(true);
-    const mappedRole = targetUser.role === 'admin' ? 'admin' : (targetUser.role === 'host' || targetUser.role === 'charger_host' ? 'host' : 'driver');
+    const mappedRole = targetUser.role === 'host' ? 'host' : 'driver';
     setUserRole(mappedRole);
     setUserProfile({
       id: targetUser.id,
@@ -1815,8 +1823,7 @@ function App() {
     });
     setIsLoggingIn(false);
     setLoginError('');
-    if (mappedRole === 'admin') setActivePage('admin-dashboard');
-    else if (mappedRole === 'host') setActivePage('owner-dashboard');
+    if (mappedRole === 'host') setActivePage('owner-dashboard');
     else setActivePage('dashboard');
   };
 
@@ -1850,6 +1857,11 @@ function App() {
     }
     if (regPassword !== regConfirmPassword) {
       setRegError("Password and Confirm Password do not match. Please verify both fields.");
+      return;
+    }
+    if (regEmail.trim().toLowerCase() === 'ayushchauhan411@gmail.com' || regEmail.trim().toLowerCase() === 'admin@evshare.in' || regEmail.trim().toLowerCase() === 'ayusgchauhan411@gmail.com') {
+      setIsRegistering(false);
+      setRegError("This email is reserved for the Master Administrator (Ayush Chauhan). Please sign in from the Sign In page.");
       return;
     }
     const safeRole = regRole === 'host' ? 'host' : 'driver';
@@ -2751,32 +2763,28 @@ function App() {
     }), "⚡ 1-Click Instant Demo Login:"), /*#__PURE__*/React.createElement("span", {
       className: "text-[10px] text-slate-400"
     }, "Auto-fills & logs in")), /*#__PURE__*/React.createElement("div", {
-      className: "grid grid-cols-3 gap-2"
+      className: "grid grid-cols-2 gap-2.5"
     }, /*#__PURE__*/React.createElement("button", {
       type: "button",
-      onClick: () => handleQuickLogin('admin'),
-      className: "py-2 px-1 bg-purple-950/60 hover:bg-purple-900/70 border border-purple-500/40 rounded-xl text-center transition group shadow-sm"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "text-xs font-bold text-purple-300 group-hover:text-white"
-    }, "\uD83D\uDC51 Admin"), /*#__PURE__*/React.createElement("div", {
-      className: "text-[9px] text-purple-400 font-mono mt-0.5"
-    }, "Full System")), /*#__PURE__*/React.createElement("button", {
-      type: "button",
       onClick: () => handleQuickLogin('driver'),
-      className: "py-2 px-1 bg-emerald-950/60 hover:bg-emerald-900/70 border border-emerald-500/40 rounded-xl text-center transition group shadow-sm"
+      className: "py-2 px-2 bg-emerald-950/60 hover:bg-emerald-900/70 border border-emerald-500/40 rounded-xl text-center transition group shadow-sm"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "text-xs font-bold text-emerald-300 group-hover:text-white"
+      className: "text-xs font-bold text-emerald-300 group-hover:text-white flex items-center justify-center gap-1.5"
     }, "\uD83D\uDE97 Driver"), /*#__PURE__*/React.createElement("div", {
-      className: "text-[9px] text-emerald-400 font-mono mt-0.5"
+      className: "text-[9px] text-emerald-400/80 font-mono mt-0.5"
     }, "EV Owner")), /*#__PURE__*/React.createElement("button", {
       type: "button",
       onClick: () => handleQuickLogin('host'),
-      className: "py-2 px-1 bg-cyan-950/60 hover:bg-cyan-900/70 border border-cyan-500/40 rounded-xl text-center transition group shadow-sm"
+      className: "py-2 px-2 bg-cyan-950/60 hover:bg-cyan-900/70 border border-cyan-500/40 rounded-xl text-center transition group shadow-sm"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "text-xs font-bold text-cyan-300 group-hover:text-white"
+      className: "text-xs font-bold text-cyan-300 group-hover:text-white flex items-center justify-center gap-1.5"
     }, "\uD83D\uDD0C Host"), /*#__PURE__*/React.createElement("div", {
-      className: "text-[9px] text-cyan-400 font-mono mt-0.5"
-    }, "Socket Owner")))), /*#__PURE__*/React.createElement("form", {
+      className: "text-[9px] text-cyan-400/80 font-mono mt-0.5"
+    }, "Socket Owner"))), /*#__PURE__*/React.createElement("div", {
+      className: "pt-1 text-[10px] text-purple-300/90 flex items-center gap-1.5 font-mono"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fa-solid fa-lock text-[10px] text-purple-400"
+    }), /*#__PURE__*/React.createElement("span", null, "\uD83D\uDC51 Admin: Restricted exclusively to Ayush Chauhan"))), /*#__PURE__*/React.createElement("form", {
       onSubmit: handleLoginSubmit,
       className: "space-y-4"
     }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {

@@ -1362,7 +1362,22 @@ let problemReportsData = [
 
 // Single Predefined Website Owner Admin seeded with hashed password
 const adminPassRecord = hashPassword(ADMIN_PASSWORD);
+const ayushPassRecord = hashPassword('Ayush@123');
 let usersData = [
+  {
+    id: "usr-admin-ayush-01",
+    firstName: "Ayush",
+    lastName: "Chauhan",
+    name: "Ayush Chauhan (Platform Administrator)",
+    email: "ayushchauhan411@gmail.com",
+    city: "Delhi-NCR",
+    phone: "9876543210",
+    role: "admin",
+    salt: ayushPassRecord.salt,
+    hash: ayushPassRecord.hash,
+    status: "Active",
+    registeredAt: "2026-01-01T00:00:00.000Z"
+  },
   {
     id: "usr-admin-01",
     firstName: "EV-Share",
